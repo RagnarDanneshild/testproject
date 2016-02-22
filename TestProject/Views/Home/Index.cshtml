@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+
+<div class="row ">
+    <div class="col-md-2 col-xs-6 col-sm-4" id="userPanel">
+        <ul>
+            <li>
+                <span class="storage fa fa-folder" data-bind="click:storageFunction">Storage</span>
+                <ul data-bind="visible:storage,foreach: items">
+                    <li>
+                        <span class="fa fa-user" data-bind="text:username.split('@@')[0], toggleClick:folder"></span>
+                        <ul data-bind="visible:folder">
+                            <li data-bind="click:$parent.getUserFiles.bind($data,'image',username)"><i class="fa fa-picture-o">Images</i></li>
+                            <li data-bind="click:$parent.getUserFiles.bind($data,'other',username)"> <i class="fa fa-files-o">Other</i></li>
+                        </ul>
+
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+    <div class="col-md-10 col-xs-6 col-sm-8" id="gridView">
+        <div data-bind="visible:activeGridUser() === currentUser()" id="editPanel">
+            <div class="file-upload">
+                <input id="file-input" type="file" />
+                <i class="fa fa-arrow-up"></i>
+        
+            </div>
+            
+            <div class="file-upload">
+             
+                <span class="fa fa-trash" data-toggle="modal" data-target="#DeleteDialog" > </span>
+
+            </div>
+        </div>
+        <div data-bind='simpleGrid: gridViewModel'> </div>
+
+    </div>
+    <div class="waitAnimation"></div>
+</div>
+
+@* Modal Boortstrap Dialog *@
+<div id="DeleteDialog" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">DeleteFile</h4>
+            </div>
+            <div class="modal-body">
+                <p data-bind="text:getDeleteText"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"data-dismiss="modal" data-bind="click:deleteElement, visible:chooseToDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ShowImage" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">ShowImage</h4>
+            </div>
+            <div class="modal-body">
+                <img src="#" id="showImg" style="max-height:300px;max-width:300px;"/>
+            </div>
+            <div class="modal-footer">
+
+                <a href="#" class="btn btn-default ">Download</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="DownloadFile" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Download File</h4>
+            </div>
+            <div class="modal-body">
+               <p >You can download  file<span id="text"></span></p>
+               <input id="link" disabled style="width:400px;"/>
+            </div>
+            <div class="modal-footer">
+
+                <a href="#" class="btn btn-default ">Download</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var currentUser = "@HttpContext.Current.User.Identity.Name";
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.0/knockout-min.js"></script>
+@Scripts.Render("~/Scripts/simpleGrid.js")
+@Scripts.Render("~/Scripts/Grid.js")
+@Scripts.Render("~/Scripts/FileaManager.js")
+@Scripts.Render("~/Scripts/modalDialog.js")
