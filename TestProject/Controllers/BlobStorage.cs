@@ -18,7 +18,10 @@ namespace TestProject.Controllers
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(
         ConfigurationManager.ConnectionStrings["StorageConnectionString"].ConnectionString);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            return blobClient.GetContainerReference("deyou");
+            CloudBlobContainer container = blobClient.GetContainerReference("deyou");
+            container.CreateIfNotExists();
+        return container;
+
         }
         public static string IsImage( HttpPostedFile postedFile)
         {
