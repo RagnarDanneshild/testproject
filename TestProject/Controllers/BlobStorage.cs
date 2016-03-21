@@ -19,7 +19,7 @@ namespace TestProject.Controllers
         ConfigurationManager.ConnectionStrings["StorageConnectionString"].ConnectionString);
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
             CloudBlobContainer container = blobClient.GetContainerReference("deyou");
-            container.CreateIfNotExists();
+            container.CreateIfNotExistsAsync();
         return container;
 
         }

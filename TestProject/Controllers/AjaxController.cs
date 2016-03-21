@@ -14,7 +14,6 @@ namespace TestProject.Controllers
     {    
         private FileSystem db = new FileSystem();
         private CloudBlobContainer container = BlobStorage.getContainer();
-        private string baseStorageUrl = "https://arhiptest.blob.core.windows.net/deyou";
         [HttpGet]
         public JsonResult getUserList()
         {
@@ -49,7 +48,7 @@ namespace TestProject.Controllers
                     FileNote newFile = new FileNote();
                     newFile.UserId = User.Identity.GetUserId();
                     newFile.AspNetUsers = db.AspNetUsers.SingleOrDefault(e => e.Id == newFile.UserId);
-                    newFile.Url = Path.Combine(baseStorageUrl,blobPath);
+                    newFile.Url = Path.Combine(container.Uri.ToString(),blobPath);
                     newFile.Name = httpPostedFile.FileName;
                     newFile.CreatedAt = System.DateTime.Now;
                     newFile.Type = BlobStorage.IsImage(httpPostedFile);
